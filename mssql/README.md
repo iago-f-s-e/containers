@@ -10,18 +10,9 @@
   -- caso crie um banco após subir o container
   -- é necessário fazer um docker-compose down e um docker-compose up -d
 
-  CREATE DATABASE <DATABASE_NAME>;
-  go
-
-  CREATE DATABASE <DATABASE_NAME>;
-  go
-
-  CREATE DATABASE <DATABASE_NAME>;
-  go
-
-  CREATE DATABASE <DATABASE_NAME>;
-  go
+  IF DB_ID('DATABASE_NAME') IS NULL CREATE DATABASE DATABASE_NAME
+  GO
 
   USE <DATABASE_NAME>; --OPCIONAL
-  go
+  GO
 ```
