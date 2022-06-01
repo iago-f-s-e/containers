@@ -11,7 +11,8 @@ services:
       - ${DB_PORT}:1433
     volumes:
       - ./data:/var/opt/mssql/data
-    entrypoint: sh -c "/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${DB_PASS} -d master -i init.sql & /opt/mssql/bin/sqlservr"
+      - ./init.sql:/scripts/init.sql
+    entrypoint: sh -c "sleep 5s && /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${DB_PASS} -d master -i scripts/init.sql & /opt/mssql/bin/sqlservr"
 
     environment:
       ACCEPT_EULA: "Y"
