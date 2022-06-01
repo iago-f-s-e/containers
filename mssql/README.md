@@ -7,6 +7,9 @@
 ```sql
   -- você pode criar um ou mais bancos
 
+  -- caso crie um banco após subir o container
+  -- é necessário fazer um docker-compose down e um docker-compose up -d
+
   CREATE DATABASE <DATABASE_NAME>;
   go
 
