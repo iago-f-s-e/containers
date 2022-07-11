@@ -1,0 +1,17 @@
+version: '3.6'
+
+services:
+  db:
+    build: .
+    container_name: postgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    extra_hosts:
+      - "host.postgres.internal:172.17.0.1"
