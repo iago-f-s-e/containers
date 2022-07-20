@@ -9,4 +9,4 @@ services:
     volumes:
       - ./data:/data
     extra_hosts:
-      - "host.redis.internal:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"

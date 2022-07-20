@@ -18,4 +18,4 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: ${DB_PASS}
     extra_hosts:
-      - "host.mssql.internal:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"

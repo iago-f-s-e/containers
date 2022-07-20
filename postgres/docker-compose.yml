@@ -14,4 +14,4 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     extra_hosts:
-      - "host.postgres.internal:172.17.0.1"
+      - "host.docker.internal:172.17.0.1"
