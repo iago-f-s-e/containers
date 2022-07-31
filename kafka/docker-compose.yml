@@ -4,12 +4,14 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     restart: always
+    mem_limit: 500m
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
   
   kafka:
     image: confluentinc/cp-kafka:latest
     restart: always
+    mem_limit: 500m
     depends_on:
       - zookeeper
     ports:
@@ -30,6 +32,11 @@ services:
     image: confluentinc/cp-enterprise-control-center:6.0.1
     hostname: control-center
     restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 500M
     depends_on:
       - kafka
     ports:
