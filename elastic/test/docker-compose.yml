@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0
+    container_name: elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=your_password_here  # Define a senha do usuário "elastic"
+      - xpack.security.enabled=true  # Habilita a segurança
+      - xpack.security.authc.api_key.enabled=true  # Habilita a autenticação por chave API
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+#      - ./temp/users:/usr/share/elasticsearch/config/users
+#      - ./temp/users_roles:/usr/share/elasticsearch/config/users_roles
+#      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch
+#      - ./elasticsearch-users:/usr/share/elasticsearch/config/users  # Monta o arquivo de usuários
+    user: "1000:1000"  # Especifica o UID e GID para o usuário elasticsearch dentro do contêiner
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u elastic:$${ELASTIC_PASSWORD} http://localhost:9200 -o /dev/null -w '%{http_code}' | grep -q '200'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - elastic
+#    entrypoint: /bin/bash -c "bin/elasticsearch-users useradd elastic2 -p your_password_here -r superuser"
+#    command: >
+#      bash -c '
+#        bin/elasticsearch-users useradd kibana_system_2 -r kibana_user,watcher_admin,kibana_admin,superuser,kibana_system,editor -p changeme &&
+#        bin/elasticsearch-users roles kibana_system_2 -a kibana_user,watcher_admin,kibana_admin,superuser,kibana_system,editor
+#      '
+
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:8.7.0
+#    container_name: kibana
+#    volumes:
+#      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
+#    environment:
+#      - SERVER_NAME=kibana
+#      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+#      - ELASTICSEARCH_USERNAME=kibana_system
+#      - ELASTICSEARCH_PASSWORD=changeme
+#    ports:
+#      - "5601:5601"
+#    networks:
+#      - elastic
+#    depends_on:
+#      elasticsearch:
+#        condition: service_healthy
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.7.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_USERNAME=elastic2
+      - ELASTICSEARCH_PASSWORD=your_password_here
+#      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=d1a66dfd-c4d3-4a0a-8290-2abcb83ab3aa
+    ports:
+      - "5601:5601"
+    networks:
+      - elastic
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+volumes:
+  esdata:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

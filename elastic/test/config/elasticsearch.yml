@@ -1,0 +1,17 @@
+#cluster.name: "docker-cluster"
+#network.host: 0.0.0.0
+#discovery.type: single-node
+#xpack.license.self_generated.type: trial
+#xpack.security.enabled: true
+#xpack.monitoring.collection.enabled: true
+
+
+#node.name: node-1
+
+# Configurações para autenticação
+xpack.security.enabled: true
+xpack.security.authc:
+  basic_internal_auth_domain:
+    type: native
+    order: 0
+

@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  curl-scheduler:
+    image: curlimages/curl:latest
+    command: sh -c "while true; do echo 'Executando CURL'; curl --request GET --url https://sabbath-house-backend.onrender.com/ping -s -o /dev/null; sleep 300; done"
+    restart: always

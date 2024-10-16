@@ -1,0 +1,6 @@
+watcher_admin:elastic2
+editor:elastic2
+kibana_user:elastic2
+kibana_system:elastic2
+kibana_admin:elastic2
+superuser:elastic2
